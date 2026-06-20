@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import type { Session } from "@supabase/supabase-js";
 import Dashboard from "./components/Dashboard";
 import Login from "./components/Login";
-import { supabase } from "./lib/supabaseClient";
+import { hasSupabaseConfig, supabase } from "./lib/supabaseClient";
 
 const isDemoDashboard =
   import.meta.env.VITE_DEMO_DASHBOARD === "true" || import.meta.env.VITE_SUPABASE_ANON_KEY === "local-preview-anon-key";
@@ -13,6 +13,11 @@ export default function App() {
 
   useEffect(() => {
     if (isDemoDashboard) {
+      return;
+    }
+
+    if (!supabase) {
+      setIsCheckingSession(false);
       return;
     }
 
@@ -48,6 +53,17 @@ export default function App() {
 
   if (isDemoDashboard) {
     return <Dashboard demoMode />;
+  }
+
+  if (!hasSupabaseConfig) {
+    return (
+      <main className="login-shell">
+        <section className="login-panel">
+          <h1>ABL 檢控面板</h1>
+          <p className="form-error">Netlify 尚未設定 Supabase 環境變數，請設定後重新部署。</p>
+        </section>
+      </main>
+    );
   }
 
   return session ? <Dashboard session={session} /> : <Login />;

@@ -12,6 +12,12 @@ export default function Login() {
     setIsSubmitting(true);
     setError("");
 
+    if (!supabase) {
+      setError("尚未設定 Supabase，無法登入。");
+      setIsSubmitting(false);
+      return;
+    }
+
     const { error: signInError } = await supabase.auth.signInWithPassword({
       email,
       password
