@@ -1,0 +1,140 @@
+import type { DashboardSummary } from "./types";
+
+export const demoDashboardSummary: DashboardSummary = {
+  overview: {
+    page_views: 1248,
+    unique_visitors: 736,
+    total_conversions: 214,
+    payment_success: 37,
+    total_conversion_rate: 0.291,
+    payment_conversion_rate: 0.05
+  },
+  sites: [
+    {
+      site_id: "quantum_frequency_assessment",
+      site_label: "Quantum Frequency Assessment",
+      page_views: 782,
+      unique_visitors: 468,
+      assessment_submit: 96,
+      audio_purchase_click: 42,
+      line_click: 31,
+      consultation_booking: 18,
+      payment_success: 11,
+      payment_conversion_rate: 0.024
+    },
+    {
+      site_id: "timewaver_audio_sales",
+      site_label: "TimeWaver Audio Sales",
+      page_views: 466,
+      unique_visitors: 298,
+      assessment_submit: 8,
+      audio_purchase_click: 83,
+      line_click: 29,
+      consultation_booking: 9,
+      payment_success: 26,
+      payment_conversion_rate: 0.087
+    }
+  ],
+  trends: [
+    {
+      date: "2026-06-14",
+      page_views: 132,
+      unique_visitors: 82,
+      assessment_submit: 12,
+      audio_purchase_click: 11,
+      line_click: 6,
+      consultation_booking: 3,
+      payment_success: 4
+    },
+    {
+      date: "2026-06-15",
+      page_views: 148,
+      unique_visitors: 89,
+      assessment_submit: 15,
+      audio_purchase_click: 14,
+      line_click: 8,
+      consultation_booking: 4,
+      payment_success: 5
+    },
+    {
+      date: "2026-06-16",
+      page_views: 176,
+      unique_visitors: 103,
+      assessment_submit: 17,
+      audio_purchase_click: 16,
+      line_click: 7,
+      consultation_booking: 3,
+      payment_success: 5
+    },
+    {
+      date: "2026-06-17",
+      page_views: 184,
+      unique_visitors: 111,
+      assessment_submit: 18,
+      audio_purchase_click: 17,
+      line_click: 9,
+      consultation_booking: 4,
+      payment_success: 6
+    },
+    {
+      date: "2026-06-18",
+      page_views: 206,
+      unique_visitors: 121,
+      assessment_submit: 19,
+      audio_purchase_click: 19,
+      line_click: 10,
+      consultation_booking: 4,
+      payment_success: 6
+    },
+    {
+      date: "2026-06-19",
+      page_views: 193,
+      unique_visitors: 113,
+      assessment_submit: 15,
+      audio_purchase_click: 23,
+      line_click: 9,
+      consultation_booking: 4,
+      payment_success: 5
+    },
+    {
+      date: "2026-06-20",
+      page_views: 209,
+      unique_visitors: 117,
+      assessment_submit: 8,
+      audio_purchase_click: 25,
+      line_click: 11,
+      consultation_booking: 5,
+      payment_success: 6
+    }
+  ],
+  sources: [
+    {
+      source: "facebook",
+      page_views: 612,
+      unique_visitors: 382,
+      total_conversions: 121,
+      payment_success: 22
+    },
+    {
+      source: "line",
+      page_views: 274,
+      unique_visitors: 156,
+      total_conversions: 48,
+      payment_success: 9
+    },
+    {
+      source: "direct",
+      page_views: 215,
+      unique_visitors: 128,
+      total_conversions: 26,
+      payment_success: 4
+    },
+    {
+      source: "google",
+      page_views: 147,
+      unique_visitors: 93,
+      total_conversions: 19,
+      payment_success: 2
+    }
+  ]
+};
