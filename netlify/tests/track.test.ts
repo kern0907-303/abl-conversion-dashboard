@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import track from "./track";
+import track from "../functions/track";
 
 const insert = vi.fn();
 const from = vi.fn(() => ({ insert }));

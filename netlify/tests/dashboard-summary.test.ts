@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import dashboardSummary from "./dashboard-summary";
+import dashboardSummary from "../functions/dashboard-summary";
 
 const getUser = vi.fn();
 const order = vi.fn();
