@@ -13,6 +13,7 @@ const emptySummary: DashboardSummary = {
   },
   sites: [],
   trends: [],
+  hourly_trends: [],
   sources: []
 };
 

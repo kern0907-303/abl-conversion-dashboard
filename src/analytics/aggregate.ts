@@ -7,7 +7,7 @@ import {
   type EventName,
   type SiteId
 } from "./constants";
-import type { AnalyticsEvent, DailyTrend, DashboardSummary, SiteMetrics, SourceMetrics } from "./types";
+import type { AnalyticsEvent, DailyTrend, DashboardSummary, HourlyTrend, SiteMetrics, SourceMetrics } from "./types";
 
 const CONVERSION_EVENTS = EVENT_NAMES.filter((eventName) => eventName !== "page_view");
 
@@ -53,6 +53,29 @@ function dateFrom(event: AnalyticsEvent) {
   return new Date(event.created_at).toISOString().slice(0, 10);
 }
 
+function hourFrom(event: AnalyticsEvent) {
+  const formatter = new Intl.DateTimeFormat("en-US", {
+    hour: "2-digit",
+    hour12: false,
+    timeZone: "Asia/Taipei"
+  });
+  const hour = formatter.format(new Date(event.created_at)).replace(/^24$/, "00");
+  return `${hour}:00`;
+}
+
+function createHourlyRows() {
+  return Array.from({ length: 24 }, (_item, hour) => {
+    const row = {
+      hour: `${String(hour).padStart(2, "0")}:00`,
+      page_views: 0,
+      unique_visitors: 0,
+      ...emptyCounts()
+    } satisfies HourlyTrend;
+
+    return row;
+  });
+}
+
 function isValidEvent(event: AnalyticsEvent) {
   return (
     isKnownSiteId(event.site_id) &&
@@ -69,9 +92,11 @@ export function buildDashboardSummary(events: AnalyticsEvent[]): DashboardSummar
   const siteVisitors = new Map<SiteId, Set<string>>();
   const sourceVisitors = new Map<string, Set<string>>();
   const trendVisitors = new Map<string, Set<string>>();
+  const hourlyVisitors = new Map<string, Set<string>>();
   const siteRows = new Map<SiteId, SiteMetrics>();
   const sourceRows = new Map<string, SourceMetrics>();
   const trendRows = new Map<string, DailyTrend>();
+  const hourlyRows = new Map<string, HourlyTrend>();
 
   let pageViews = 0;
   let totalConversions = 0;
@@ -87,6 +112,11 @@ export function buildDashboardSummary(events: AnalyticsEvent[]): DashboardSummar
       ...emptyCounts(),
       payment_conversion_rate: 0
     });
+  }
+
+  for (const hourlyRow of createHourlyRows()) {
+    hourlyRows.set(hourlyRow.hour, hourlyRow);
+    hourlyVisitors.set(hourlyRow.hour, new Set());
   }
 
   for (const event of events) {
@@ -117,6 +147,13 @@ export function buildDashboardSummary(events: AnalyticsEvent[]): DashboardSummar
     trendVisitorSet.add(event.visitor_id);
     trendVisitors.set(date, trendVisitorSet);
 
+    const hour = hourFrom(event);
+    const hourlyRow = hourlyRows.get(hour);
+    const hourlyVisitorSet = hourlyVisitors.get(hour);
+    if (hourlyVisitorSet) {
+      hourlyVisitorSet.add(event.visitor_id);
+    }
+
     const source = sourceFrom(event);
     const sourceRow =
       sourceRows.get(source) ??
@@ -136,6 +173,9 @@ export function buildDashboardSummary(events: AnalyticsEvent[]): DashboardSummar
     if (event.event_name === "page_view") {
       pageViews += 1;
       trendRow.page_views += 1;
+      if (hourlyRow) {
+        hourlyRow.page_views += 1;
+      }
       sourceRow.page_views += 1;
       if (siteRow) {
         siteRow.page_views += 1;
@@ -143,6 +183,9 @@ export function buildDashboardSummary(events: AnalyticsEvent[]): DashboardSummar
     } else {
       totalConversions += 1;
       incrementConversionCount(trendRow, event.event_name);
+      if (hourlyRow) {
+        incrementConversionCount(hourlyRow, event.event_name);
+      }
       sourceRow.total_conversions += 1;
       if (siteRow) {
         incrementConversionCount(siteRow, event.event_name);
@@ -208,6 +251,10 @@ export function buildDashboardSummary(events: AnalyticsEvent[]): DashboardSummar
     },
     sites,
     trends,
+    hourly_trends: Array.from(hourlyRows.values()).map((hourlyRow) => ({
+      ...hourlyRow,
+      unique_visitors: hourlyVisitors.get(hourlyRow.hour)?.size ?? 0
+    })),
     sources
   };
 }

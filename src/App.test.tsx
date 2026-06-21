@@ -30,6 +30,10 @@ vi.mock("./components/TrendChart", () => ({
   default: () => <section aria-label="每日趨勢">每日趨勢</section>
 }));
 
+vi.mock("./components/HourlyTrendChart", () => ({
+  default: () => <section aria-label="訪問時段分布">訪問時段分布</section>
+}));
+
 const summary: DashboardSummary = {
   overview: {
     page_views: 128,
@@ -83,6 +87,28 @@ const summary: DashboardSummary = {
       assessment_submit: 7,
       audio_purchase_click: 8,
       line_click: 4,
+      consultation_booking: 1,
+      payment_success: 2
+    }
+  ],
+  hourly_trends: [
+    {
+      hour: "00:00",
+      page_views: 0,
+      unique_visitors: 0,
+      assessment_submit: 0,
+      audio_purchase_click: 0,
+      line_click: 0,
+      consultation_booking: 0,
+      payment_success: 0
+    },
+    {
+      hour: "21:00",
+      page_views: 38,
+      unique_visitors: 21,
+      assessment_submit: 4,
+      audio_purchase_click: 7,
+      line_click: 3,
       consultation_booking: 1,
       payment_success: 2
     }
@@ -159,6 +185,7 @@ describe("App", () => {
     expect(screen.getByLabelText("網站")).toBeInTheDocument();
     expect(screen.getByLabelText("來源")).toBeInTheDocument();
     expect(screen.getByLabelText("事件")).toBeInTheDocument();
+    expect(screen.getByLabelText("訪問時段分布")).toBeInTheDocument();
     expect(screen.getByText("合計")).toBeInTheDocument();
     expect(screen.getAllByText("72").length).toBeGreaterThan(1);
   });

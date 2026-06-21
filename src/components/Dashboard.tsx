@@ -5,6 +5,7 @@ import { demoDashboardSummary } from "../analytics/demoSummary";
 import type { DashboardSummary } from "../analytics/types";
 import { fetchDashboardSummary } from "../lib/api";
 import FunnelPanel from "./FunnelPanel";
+import HourlyTrendChart from "./HourlyTrendChart";
 import MetricCard from "./MetricCard";
 import SiteComparisonTable from "./SiteComparisonTable";
 import SourceTable from "./SourceTable";
@@ -179,6 +180,7 @@ export default function Dashboard({ demoMode = false, session }: DashboardProps)
             <SourceTable sources={summary.sources} />
           </div>
           <TrendChart trends={summary.trends} />
+          <HourlyTrendChart hourlyTrends={summary.hourly_trends} />
         </>
       ) : null}
     </main>

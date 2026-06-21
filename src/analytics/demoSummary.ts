@@ -1,5 +1,30 @@
 import type { DashboardSummary } from "./types";
 
+function demoHourlyTrends() {
+  const activeHours = new Map([
+    ["09:00", { page_views: 72, unique_visitors: 48, assessment_submit: 7, audio_purchase_click: 4, line_click: 3, consultation_booking: 1, payment_success: 1 }],
+    ["12:00", { page_views: 88, unique_visitors: 53, assessment_submit: 9, audio_purchase_click: 6, line_click: 4, consultation_booking: 2, payment_success: 2 }],
+    ["15:00", { page_views: 104, unique_visitors: 61, assessment_submit: 11, audio_purchase_click: 8, line_click: 5, consultation_booking: 2, payment_success: 3 }],
+    ["20:00", { page_views: 156, unique_visitors: 92, assessment_submit: 14, audio_purchase_click: 18, line_click: 9, consultation_booking: 3, payment_success: 5 }],
+    ["22:00", { page_views: 132, unique_visitors: 78, assessment_submit: 10, audio_purchase_click: 15, line_click: 8, consultation_booking: 2, payment_success: 4 }]
+  ]);
+
+  return Array.from({ length: 24 }, (_item, hour) => {
+    const label = `${String(hour).padStart(2, "0")}:00`;
+    return {
+      hour: label,
+      page_views: 0,
+      unique_visitors: 0,
+      assessment_submit: 0,
+      audio_purchase_click: 0,
+      line_click: 0,
+      consultation_booking: 0,
+      payment_success: 0,
+      ...activeHours.get(label)
+    };
+  });
+}
+
 export const demoDashboardSummary: DashboardSummary = {
   overview: {
     page_views: 1248,
@@ -107,6 +132,7 @@ export const demoDashboardSummary: DashboardSummary = {
       payment_success: 6
     }
   ],
+  hourly_trends: demoHourlyTrends(),
   sources: [
     {
       source: "facebook",

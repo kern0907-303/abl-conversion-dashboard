@@ -60,6 +60,16 @@ describe("buildDashboardSummary", () => {
         }
       ],
       trends: [],
+      hourly_trends: Array.from({ length: 24 }, (_item, hour) => ({
+        hour: `${String(hour).padStart(2, "0")}:00`,
+        page_views: 0,
+        unique_visitors: 0,
+        assessment_submit: 0,
+        audio_purchase_click: 0,
+        line_click: 0,
+        consultation_booking: 0,
+        payment_success: 0
+      })),
       sources: []
     });
   });
@@ -203,6 +213,36 @@ describe("buildDashboardSummary", () => {
     ]);
   });
 
+  it("aggregates hourly trends by Taiwan visit hour", () => {
+    const summary = buildDashboardSummary([
+      event({ event_name: "page_view", created_at: "2026-06-20T15:10:00.000Z", visitor_id: "visitor-1" }),
+      event({ event_name: "page_view", created_at: "2026-06-20T15:25:00.000Z", visitor_id: "visitor-2" }),
+      event({ event_name: "assessment_submit", created_at: "2026-06-20T15:40:00.000Z", visitor_id: "visitor-1" }),
+      event({ event_name: "payment_success", created_at: "2026-06-20T16:05:00.000Z", visitor_id: "visitor-3" })
+    ]);
+
+    expect(summary.hourly_trends.find((row) => row.hour === "23:00")).toEqual({
+      hour: "23:00",
+      page_views: 2,
+      unique_visitors: 2,
+      assessment_submit: 1,
+      audio_purchase_click: 0,
+      line_click: 0,
+      consultation_booking: 0,
+      payment_success: 0
+    });
+    expect(summary.hourly_trends.find((row) => row.hour === "00:00")).toEqual({
+      hour: "00:00",
+      page_views: 0,
+      unique_visitors: 1,
+      assessment_submit: 0,
+      audio_purchase_click: 0,
+      line_click: 0,
+      consultation_booking: 0,
+      payment_success: 1
+    });
+  });
+
   it("uses direct for blank source fields and rounds repeating decimal rates to four places", () => {
     const summary = buildDashboardSummary([
       event({ event_name: "page_view", created_at: "2026-06-19T00:00:00.000Z", visitor_id: "visitor-1" }),
@@ -286,6 +326,13 @@ describe("buildDashboardSummary", () => {
         payment_success: 1
       }
     ]);
+    expect(summary.hourly_trends.find((row) => row.hour === "08:00")).toMatchObject({
+      page_views: 1,
+      unique_visitors: 1
+    });
+    expect(summary.hourly_trends.find((row) => row.hour === "09:00")).toMatchObject({
+      payment_success: 1
+    });
     expect(summary.sources).toEqual([
       {
         source: "direct",

@@ -54,6 +54,17 @@ export type DailyTrend = {
   payment_success: number;
 };
 
+export type HourlyTrend = {
+  hour: string;
+  page_views: number;
+  unique_visitors: number;
+  assessment_submit: number;
+  audio_purchase_click: number;
+  line_click: number;
+  consultation_booking: number;
+  payment_success: number;
+};
+
 export type SourceMetrics = {
   source: string;
   page_views: number;
@@ -66,5 +77,6 @@ export type DashboardSummary = {
   overview: OverviewMetrics;
   sites: SiteMetrics[];
   trends: DailyTrend[];
+  hourly_trends: HourlyTrend[];
   sources: SourceMetrics[];
 };
