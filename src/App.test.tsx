@@ -4,6 +4,19 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import App from "./App";
 import type { DashboardSummary } from "./analytics/types";
 
+const zeroCounts = {
+  quiz_start: 0,
+  quiz_complete: 0,
+  lead_form_view: 0,
+  assessment_submit: 0,
+  result_view: 0,
+  audio_purchase_click: 0,
+  recommended_audio_click: 0,
+  line_click: 0,
+  consultation_booking: 0,
+  payment_success: 0
+};
+
 const mocks = vi.hoisted(() => ({
   getSession: vi.fn(),
   onAuthStateChange: vi.fn(),
@@ -49,7 +62,12 @@ const summary: DashboardSummary = {
       site_label: "Quantum Frequency Assessment",
       page_views: 80,
       unique_visitors: 50,
+      ...zeroCounts,
+      quiz_start: 36,
+      quiz_complete: 20,
+      lead_form_view: 18,
       assessment_submit: 12,
+      result_view: 12,
       audio_purchase_click: 3,
       line_click: 5,
       consultation_booking: 2,
@@ -61,6 +79,7 @@ const summary: DashboardSummary = {
       site_label: "TimeWaver Audio Sales",
       page_views: 48,
       unique_visitors: 30,
+      ...zeroCounts,
       assessment_submit: 1,
       audio_purchase_click: 10,
       line_click: 2,
@@ -74,6 +93,9 @@ const summary: DashboardSummary = {
       date: "2026-06-18",
       page_views: 60,
       unique_visitors: 32,
+      ...zeroCounts,
+      quiz_start: 16,
+      quiz_complete: 9,
       assessment_submit: 6,
       audio_purchase_click: 5,
       line_click: 3,
@@ -84,6 +106,9 @@ const summary: DashboardSummary = {
       date: "2026-06-19",
       page_views: 68,
       unique_visitors: 40,
+      ...zeroCounts,
+      quiz_start: 20,
+      quiz_complete: 11,
       assessment_submit: 7,
       audio_purchase_click: 8,
       line_click: 4,
@@ -96,16 +121,14 @@ const summary: DashboardSummary = {
       hour: "00:00",
       page_views: 0,
       unique_visitors: 0,
-      assessment_submit: 0,
-      audio_purchase_click: 0,
-      line_click: 0,
-      consultation_booking: 0,
-      payment_success: 0
+      ...zeroCounts
     },
     {
       hour: "21:00",
       page_views: 38,
       unique_visitors: 21,
+      ...zeroCounts,
+      quiz_complete: 5,
       assessment_submit: 4,
       audio_purchase_click: 7,
       line_click: 3,

@@ -2,6 +2,19 @@ import { describe, expect, it } from "vitest";
 import type { AnalyticsEvent } from "./types";
 import { buildDashboardSummary } from "./aggregate";
 
+const zeroCounts = {
+  quiz_start: 0,
+  quiz_complete: 0,
+  lead_form_view: 0,
+  assessment_submit: 0,
+  result_view: 0,
+  audio_purchase_click: 0,
+  recommended_audio_click: 0,
+  line_click: 0,
+  consultation_booking: 0,
+  payment_success: 0
+};
+
 const baseEvent = {
   site_id: "quantum_frequency_assessment",
   visitor_id: "visitor-1",
@@ -39,11 +52,7 @@ describe("buildDashboardSummary", () => {
           site_label: "Quantum Frequency Assessment",
           page_views: 0,
           unique_visitors: 0,
-          assessment_submit: 0,
-          audio_purchase_click: 0,
-          line_click: 0,
-          consultation_booking: 0,
-          payment_success: 0,
+          ...zeroCounts,
           payment_conversion_rate: 0
         },
         {
@@ -51,11 +60,7 @@ describe("buildDashboardSummary", () => {
           site_label: "TimeWaver Audio Sales",
           page_views: 0,
           unique_visitors: 0,
-          assessment_submit: 0,
-          audio_purchase_click: 0,
-          line_click: 0,
-          consultation_booking: 0,
-          payment_success: 0,
+          ...zeroCounts,
           payment_conversion_rate: 0
         }
       ],
@@ -64,11 +69,7 @@ describe("buildDashboardSummary", () => {
         hour: `${String(hour).padStart(2, "0")}:00`,
         page_views: 0,
         unique_visitors: 0,
-        assessment_submit: 0,
-        audio_purchase_click: 0,
-        line_click: 0,
-        consultation_booking: 0,
-        payment_success: 0
+        ...zeroCounts
       })),
       sources: []
     });
@@ -144,10 +145,9 @@ describe("buildDashboardSummary", () => {
         site_label: "Quantum Frequency Assessment",
         page_views: 2,
         unique_visitors: 3,
+        ...zeroCounts,
         assessment_submit: 1,
-        audio_purchase_click: 0,
         line_click: 1,
-        consultation_booking: 0,
         payment_success: 1,
         payment_conversion_rate: 0.3333
       },
@@ -156,11 +156,9 @@ describe("buildDashboardSummary", () => {
         site_label: "TimeWaver Audio Sales",
         page_views: 1,
         unique_visitors: 2,
-        assessment_submit: 0,
+        ...zeroCounts,
         audio_purchase_click: 1,
-        line_click: 0,
         consultation_booking: 1,
-        payment_success: 0,
         payment_conversion_rate: 0
       }
     ]);
@@ -170,17 +168,14 @@ describe("buildDashboardSummary", () => {
         date: "2026-06-17",
         page_views: 2,
         unique_visitors: 2,
+        ...zeroCounts,
         assessment_submit: 1,
-        audio_purchase_click: 0,
-        line_click: 0,
-        consultation_booking: 0,
-        payment_success: 0
       },
       {
         date: "2026-06-18",
         page_views: 1,
         unique_visitors: 4,
-        assessment_submit: 0,
+        ...zeroCounts,
         audio_purchase_click: 1,
         line_click: 1,
         consultation_booking: 1,
@@ -225,20 +220,14 @@ describe("buildDashboardSummary", () => {
       hour: "23:00",
       page_views: 2,
       unique_visitors: 2,
+      ...zeroCounts,
       assessment_submit: 1,
-      audio_purchase_click: 0,
-      line_click: 0,
-      consultation_booking: 0,
-      payment_success: 0
     });
     expect(summary.hourly_trends.find((row) => row.hour === "00:00")).toEqual({
       hour: "00:00",
       page_views: 0,
       unique_visitors: 1,
-      assessment_submit: 0,
-      audio_purchase_click: 0,
-      line_click: 0,
-      consultation_booking: 0,
+      ...zeroCounts,
       payment_success: 1
     });
   });
@@ -319,10 +308,7 @@ describe("buildDashboardSummary", () => {
         date: "2026-06-19",
         page_views: 1,
         unique_visitors: 1,
-        assessment_submit: 0,
-        audio_purchase_click: 0,
-        line_click: 0,
-        consultation_booking: 0,
+        ...zeroCounts,
         payment_success: 1
       }
     ]);

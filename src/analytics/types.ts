@@ -1,5 +1,8 @@
 import type { EventName, SiteId } from "./constants";
 
+export type CountableEventName = Exclude<EventName, "page_view">;
+export type EventCounts = Record<CountableEventName, number>;
+
 export type AnalyticsEvent = {
   id?: string;
   site_id: SiteId;
@@ -21,16 +24,11 @@ export type DateRange = {
   to: string;
 };
 
-export type SiteMetrics = {
+export type SiteMetrics = EventCounts & {
   site_id: SiteId;
   site_label: string;
   page_views: number;
   unique_visitors: number;
-  assessment_submit: number;
-  audio_purchase_click: number;
-  line_click: number;
-  consultation_booking: number;
-  payment_success: number;
   payment_conversion_rate: number;
 };
 
@@ -43,26 +41,16 @@ export type OverviewMetrics = {
   payment_conversion_rate: number;
 };
 
-export type DailyTrend = {
+export type DailyTrend = EventCounts & {
   date: string;
   page_views: number;
   unique_visitors: number;
-  assessment_submit: number;
-  audio_purchase_click: number;
-  line_click: number;
-  consultation_booking: number;
-  payment_success: number;
 };
 
-export type HourlyTrend = {
+export type HourlyTrend = EventCounts & {
   hour: string;
   page_views: number;
   unique_visitors: number;
-  assessment_submit: number;
-  audio_purchase_click: number;
-  line_click: number;
-  consultation_booking: number;
-  payment_success: number;
 };
 
 export type SourceMetrics = {

@@ -33,7 +33,8 @@ export default function TrendChart({ trends }: TrendChartProps) {
               <Legend />
               <Line dataKey="page_views" name="來訪總次數" stroke="#255a8f" strokeWidth={2} type="monotone" />
               <Line dataKey="unique_visitors" name="不重複訪客" stroke="#2d7d6f" strokeWidth={2} type="monotone" />
-              <Line dataKey="assessment_submit" name="送出評估表" stroke="#7b61a8" strokeWidth={2} type="monotone" />
+              <Line dataKey="quiz_complete" name="完成檢測" stroke="#7b61a8" strokeWidth={2} type="monotone" />
+              <Line dataKey="assessment_submit" name="送出 Email" stroke="#6a4c93" strokeWidth={2} type="monotone" />
               <Line dataKey="audio_purchase_click" name="點擊購買音頻" stroke="#a66f2d" strokeWidth={2} type="monotone" />
               <Line dataKey="line_click" name="加入 LINE" stroke="#1f8f5f" strokeWidth={2} type="monotone" />
               <Line dataKey="consultation_booking" name="預約諮詢" stroke="#8f6a25" strokeWidth={2} type="monotone" />

@@ -17,8 +17,13 @@ describe("analytics constants", () => {
   it("keeps the dashboard event order stable", () => {
     expect(EVENT_NAMES).toEqual([
       "page_view",
+      "quiz_start",
+      "quiz_complete",
+      "lead_form_view",
       "assessment_submit",
+      "result_view",
       "audio_purchase_click",
+      "recommended_audio_click",
       "line_click",
       "consultation_booking",
       "payment_success"

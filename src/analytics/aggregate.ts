@@ -7,25 +7,24 @@ import {
   type EventName,
   type SiteId
 } from "./constants";
-import type { AnalyticsEvent, DailyTrend, DashboardSummary, HourlyTrend, SiteMetrics, SourceMetrics } from "./types";
+import type {
+  AnalyticsEvent,
+  CountableEventName,
+  DailyTrend,
+  DashboardSummary,
+  EventCounts,
+  HourlyTrend,
+  SiteMetrics,
+  SourceMetrics
+} from "./types";
 
-const CONVERSION_EVENTS = EVENT_NAMES.filter((eventName) => eventName !== "page_view");
+const CONVERSION_EVENTS = EVENT_NAMES.filter((eventName): eventName is CountableEventName => eventName !== "page_view");
 
-type CountableEvent = Exclude<EventName, "page_view">;
-
-type Counts = Record<CountableEvent, number>;
-
-function emptyCounts(): Counts {
-  return {
-    assessment_submit: 0,
-    audio_purchase_click: 0,
-    line_click: 0,
-    consultation_booking: 0,
-    payment_success: 0
-  };
+function emptyCounts(): EventCounts {
+  return Object.fromEntries(CONVERSION_EVENTS.map((eventName) => [eventName, 0])) as EventCounts;
 }
 
-function incrementConversionCount(counts: Counts, eventName: EventName) {
+function incrementConversionCount(counts: EventCounts, eventName: EventName) {
   if (eventName !== "page_view") {
     counts[eventName] += 1;
   }

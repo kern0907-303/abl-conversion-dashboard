@@ -102,6 +102,25 @@ describe("track function", () => {
     });
   });
 
+  it("accepts quiz completion events from the assessment page", async () => {
+    const response = await track(
+      createRequest("POST", {
+        ...validPayload,
+        event_name: "quiz_complete",
+        metadata: { result_type: "A" }
+      }),
+      {} as never
+    );
+
+    expect(response.status).toBe(202);
+    expect(insert).toHaveBeenCalledWith(
+      expect.objectContaining({
+        event_name: "quiz_complete",
+        metadata: { result_type: "A" }
+      })
+    );
+  });
+
   it("rejects invalid JSON", async () => {
     const response = await track(
       new Request("https://dashboard.example.com/api/track", {

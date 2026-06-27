@@ -17,8 +17,15 @@ export default function FunnelPanel({ summary }: FunnelPanelProps) {
   const visitors = summary.overview.unique_visitors;
   const steps = [
     { label: "來訪", value: summary.overview.page_views },
+    { label: EVENT_LABELS.quiz_start, value: summary.sites.reduce((total, site) => total + site.quiz_start, 0) },
+    { label: EVENT_LABELS.quiz_complete, value: summary.sites.reduce((total, site) => total + site.quiz_complete, 0) },
     { label: EVENT_LABELS.assessment_submit, value: summary.sites.reduce((total, site) => total + site.assessment_submit, 0) },
+    { label: EVENT_LABELS.result_view, value: summary.sites.reduce((total, site) => total + site.result_view, 0) },
     { label: EVENT_LABELS.audio_purchase_click, value: summary.sites.reduce((total, site) => total + site.audio_purchase_click, 0) },
+    {
+      label: EVENT_LABELS.recommended_audio_click,
+      value: summary.sites.reduce((total, site) => total + site.recommended_audio_click, 0)
+    },
     { label: EVENT_LABELS.line_click, value: summary.sites.reduce((total, site) => total + site.line_click, 0) },
     {
       label: EVENT_LABELS.consultation_booking,
